@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>HTML 5 Audio - Teamvoy test</title>
+
+    <link href="styles.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+     
+    <section class="htm5-player">
+
+        <div class="playing-info-box">
+            <div track-name></div>
+            <div track-status></div>
+        </div>
+
+        <div>
+            <button class="play">Play</button>
+            <button class="pause">Pause</button>
+            <button class="prev">Previous</button>
+            <button class="next">Next</button>
+            <input type="range" min="0" max="100" value="100" oninput="changeVolume(this);">
+        </div>
+
+        <div class="audio-tracks-box">
+
+        </div>
+
+
+        <!-- 
+        <input id="audio_file" type="file" accept="audio/*" />
+        <audio controls="controls" id="audio_player" />
+
+        <audio preload id="audio-plyr" controls="controls">
+        Your browser does not support HTML5 Audio!
+        </audio> 
+        -->
+    </section>
+ 
+    <script  type="text/javascript" src="buffer-loader.js"></script>
+    <script  type="text/javascript" src="main.js"></script>
+</body>
+</html>
