@@ -1,10 +1,18 @@
 window.onload = init;
-var context;
-var source;
-var bufferLoader;
-var bufferArray;
-var volumeGainNode;
 
+let context,
+    sourceNode,
+    bufferLoader,
+    bufferArray,
+    volumeGainNode,
+    audioIndex = 0,
+    startedAt = 0,
+    pausedAt = 0;
+
+var playBtn = document.querySelector('.play');
+var pauseBtn = document.querySelector('.pause');
+var prevBtn = document.querySelector('.prev');
+var nextBtn = document.querySelector('.next');
 
 function init() {
   window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -13,27 +21,72 @@ function init() {
   bufferLoader = new BufferLoader(
     context,
     [
-      'https://ia800703.us.archive.org/3/items/mythium/BSFM_ATKM.mp3',
-    //   'https://ia800703.us.archive.org/3/items/mythium/PNY04-05_OTW.mp3',
-    //   'https://ia800703.us.archive.org/3/items/mythium/PNY04-05_TSOWA.mp3'
+       'https://ia800703.us.archive.org/3/items/mythium/PNY04-05_TSOWA.mp3',
+       'https://ia800703.us.archive.org/3/items/mythium/PNY04-05_OTW.mp3',
+       'https://ia800703.us.archive.org/3/items/mythium/BSFM_ATKM.mp3'
     ],
-    function(bufferList) { bufferArray = bufferList; }
+    function(bufferList) { console.log('Loaded'); html5Player =  new AudioPlayer(bufferList); }
     );
 
   bufferLoader.load();
 }
 
+
+
+
+
+
+
+function AudioPlayer(songsData) {
+    this.allSongsData = songsData;
+
+    this.sourceNode = context.createBufferSource();
+    this.sourceNode.buffer = this.allSongsData[0];
+
+    this.volumeGainNode = context.createGain();
+    this.sourceNode.connect(this.volumeGainNode);
+    this.volumeGainNode.connect(context.destination);
+
+
+    this.changeVolume = function(element) {
+        var volume = element.value;
+        var fraction = parseInt(element.value) / parseInt(element.max);
+        this.volumeGainNode.gain.value = fraction * fraction;
+    };
+
+
+} 
+
+
+
+AudioPlayer.prototype.play = function() {
+    this.sourceNode.start();
+};
+
+AudioPlayer.prototype.pause = function() {
+    this.sourceNode.stop();
+};
+
+
+
+
 function play(songData) {
-    
-    source = context.createBufferSource();
-    source.buffer = songData;
+    console.log(sourceNode);
+    if (sourceNode) {
+        sourceNode.disconnect();
+        sourceNode.stop(0);
+        sourceNode = null;
+    };
 
-    volumeGainNode = context.createGain();
-    source.connect(volumeGainNode);
+    // sourceNode = context.createBufferSource();
+    // sourceNode.buffer = songData;
 
-    volumeGainNode.connect(context.destination);
+    // volumeGainNode = context.createGain();
+    // sourceNode.connect(volumeGainNode);
 
-    source.start();
+    // volumeGainNode.connect(context.destination);
+
+    // sourceNode.start();
 };
 
 
@@ -41,15 +94,6 @@ function play(songData) {
 
 
 
-var nextBtn = document.querySelector('.next');
-nextBtn.onclick = function() {
-    play(bufferArray[0]);
-}; 
-
-var pauseBtn = document.querySelector('.pause');
-pauseBtn.onclick = function() {
-    source.stop();
-}; 
 
 
 
@@ -59,8 +103,4 @@ pauseBtn.onclick = function() {
 
 
 
-changeVolume = function(element) {
-    var volume = element.value;
-    var fraction = parseInt(element.value) / parseInt(element.max);
-    volumeGainNode.gain.value = fraction * fraction;
-};
+ 

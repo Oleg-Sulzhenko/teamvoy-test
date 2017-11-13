@@ -18,11 +18,11 @@
         </div>
 
         <div>
-            <button class="play">Play</button>
+            <button class="play" onClick="html5Player.play();">Play</button>
             <button class="pause">Pause</button>
             <button class="prev">Previous</button>
             <button class="next">Next</button>
-            <input type="range" min="0" max="100" value="100" oninput="changeVolume(this);">
+            <input type="range" min="0" max="100" value="100" oninput="html5Player.changeVolume(this);">
         </div>
 
         <div class="audio-tracks-box">
